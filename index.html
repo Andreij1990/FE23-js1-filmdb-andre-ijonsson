@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmportal</title>
+    <script src="js/anime.min.js"></script>
+    <script src="js/script.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bodyIndex">
+    <div class="cont">
+        <div class="ulClass">
+            <ul>
+                <li><a href="index.html">Search</a></li>
+                <li><a href="topplista.html">Top 100</a></li>
+                <li><a href="https://www.themoviedb.org/" target="_blank">TMDb</a></li>
+                <li><a href="#top">Back to top</a></li>
+              </ul>
+        </div>
+    <div class="innehall">
+        <div class="sokofinn">
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="&#x1F50E" required>
+                <select id="searchType">
+                    <option value="movies">Movies</option>
+                    <option value="people">People</option>
+                </select>
+                <input type="submit" id="searchButton" value="Search">
+            </form>
+            <div class="filmopers">
+                <div id="filmTitlar">
+                    <div class="filmResultat1">
+                        <div id="movie-info-result1"></div>
+                        <div id="movie-info-result2"></div>
+                        <div id="movie-info-result3"></div>
+                        <div id="movie-info-result4"></div>
+                        <div id="movie-info-result5"></div>
+                    </div>
+                    <div class="filmResultat2">
+                        <div id="movie-info-result6"></div>
+                        <div id="movie-info-result7"></div>
+                        <div id="movie-info-result8"></div>
+                        <div id="movie-info-result9"></div>
+                        <div id="movie-info-result10"></div>
+                    </div>
+                    <div class="filmResultat3">
+                        <div id="movie-info-result11"></div>
+                        <div id="movie-info-result12"></div>
+                        <div id="movie-info-result13"></div>
+                        <div id="movie-info-result14"></div>
+                        <div id="movie-info-result15"></div>
+                    </div>
+                </div>
+                <div id="personTitlar">
+                    <div class="personResultat1">
+                        <div id="person-info-result1"></div>
+                        <div id="person-info-result2"></div>
+                        <div id="person-info-result3"></div>
+                        <div id="person-info-result4"></div>
+                        <div id="person-info-result5"></div>
+                    </div>
+                    <div class="personResultat2">
+                        <div id="person-info-result6"></div>
+                        <div id="person-info-result7"></div>
+                        <div id="person-info-result8"></div>
+                        <div id="person-info-result9"></div>
+                        <div id="person-info-result10"></div>
+                    </div>
+                    <div class="personResultat3">
+                        <div id="person-info-result11"></div>
+                        <div id="person-info-result12"></div>
+                        <div id="person-info-result13"></div>
+                        <div id="person-info-result14"></div>
+                        <div id="person-info-result15"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="toggleButton"></button>
+        <div id="divx"></div>
+        <p id="ovrigt">Search results: </p>
+        <ol id="movieList"></ol>
+        <ol id="peopleList"></ol>
+    </div>
+</div>
+<div id="svg-container1">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+        <text class="letter-f" x="38%" y="50%" font-family="Arial" font-size="40" fill="black">F</text>
+        <text class="text-ilmDb" x="50%" y="50%" font-family="Arial" font-size="20" fill="black">ilmDb</text>
+    </svg>
+</div>
+
+<div id="svg-container2">
+<svg class="line-drawing-demo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <line id="lineToDraw" x1="0" y1="100" x2="400" y2="100" stroke="black" stroke-width="4" />
+</svg>
+</div>
+
+
+</body>
+</html>
