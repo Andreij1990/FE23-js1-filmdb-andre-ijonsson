@@ -45,8 +45,8 @@ function fetchRatedMovies() {
     .then(data => {
       console.log(data);
 
-      data.results.forEach(movie => {
-        const listItem = createMovieLink(movie);
+      data.results.forEach((movie, index) => {
+        const listItem = createMovieLink(movie, index);
         ratedTopList.appendChild(listItem);
 
         const posterImg = createMoviePost(movie);
@@ -76,8 +76,8 @@ function fetchPopularMovies() {
   .then(data => {
       console.log(data);
 
-      data.results.forEach(movie => {
-          const listItem = createMovieLink(movie);
+      data.results.forEach((movie, index) => {
+          const listItem = createMovieLink(movie, index);
           popularTopList.appendChild(listItem);
 
           const posterImg = createMoviePost(movie);
@@ -97,12 +97,18 @@ fetchPopularMovies();
 
 fetchRatedMovies();
 
-function createMovieLink(movie) {
+function createMovieLink(movie, index) {
     const listItem = document.createElement('li');
     const movieRef = document.createElement("a");
     movieRef.href = `infosida.html?movieId=${movie.id}`;
     movieRef.textContent = movie.title + " (" + movie.release_date + ")";
     movieRef.setAttribute("target", "_blank");
+
+    if (index < 10) {
+      movieRef.style.fontWeight = 'bold';
+      movieRef.style.color = 'green';
+    }
+
     listItem.appendChild(movieRef);
     return listItem;
   }
