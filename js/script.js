@@ -1,12 +1,23 @@
-const API_KEY = "9451350a84bd8f4b2bd8929f67364a18";
+const apiKey = "9451350a84bd8f4b2bd8929f67364a18";
 
 const searchForm = document.getElementById("searchForm");
 const searchResultsContainer = document.getElementById("searchResults");
 const movieDetailsContainer = document.getElementById("movieDetails");
 const ovrigt = document.getElementById('ovrigt');
-
+const movieList = document.getElementById('movieList');
 const svgCont1 = document.getElementById('svg-container1');
 const svgCont2 = document.getElementById('svg-container2');
+
+const toggleButton = document.getElementById('toggleButton');
+const filmResultat1 = document.querySelector('.filmResultat1');
+const filmResultat2 = document.querySelector('.filmResultat2');
+const filmResultat3 = document.querySelector('.filmResultat3');
+
+const personResultat1 = document.querySelector('.personResultat1');
+const personResultat2 = document.querySelector('.personResultat2');
+const personResultat3 = document.querySelector('.personResultat3');
+
+const divx = document.getElementById('divx');
 
 let intervalId;
 
@@ -43,67 +54,68 @@ searchForm.addEventListener("submit", (event) => {
     }
 
     ovrigt.style.display = 'block';
-    startRecurringEventOnClick();
+    startImageEvent();
 
     svgCont1.style.display = 'none';
     svgCont2.style.display = 'none';
 });
 
+//automatiskt bildspel mellan de 15 första sökresultaten
+function startImageEvent() {
+    intervalId = setInterval(startoverImageEvent, 3500);
 
-function startRecurringEventOnClick() {
-    intervalId = setInterval(recurringEvent, 3500);
+    filmResultat1.removeEventListener('mouseover', stopImageEvent);
+    filmResultat1.addEventListener('mouseover', stopImageEvent);
+    filmResultat1.addEventListener('mouseout', startImageEvent);
 
-    filmResultat1.removeEventListener('mouseover', stopRecurringEvent);
-    filmResultat1.addEventListener('mouseover', stopRecurringEvent);
-    filmResultat1.addEventListener('mouseout', startRecurringEventOnClick);
+    filmResultat2.removeEventListener('mouseover', stopImageEvent);
+    filmResultat2.addEventListener('mouseover', stopImageEvent);
+    filmResultat2.addEventListener('mouseout', startImageEvent);
 
-    filmResultat2.removeEventListener('mouseover', stopRecurringEvent);
-    filmResultat2.addEventListener('mouseover', stopRecurringEvent);
-    filmResultat2.addEventListener('mouseout', startRecurringEventOnClick);
+    filmResultat3.removeEventListener('mouseover', stopImageEvent);
+    filmResultat3.addEventListener('mouseover', stopImageEvent);
+    filmResultat3.addEventListener('mouseout', startImageEvent);
 
-    filmResultat3.removeEventListener('mouseover', stopRecurringEvent);
-    filmResultat3.addEventListener('mouseover', stopRecurringEvent);
-    filmResultat3.addEventListener('mouseout', startRecurringEventOnClick);
+    personResultat1.removeEventListener('mouseover', stopImageEvent);
+    personResultat1.addEventListener('mouseover', stopImageEvent);
+    personResultat1.addEventListener('mouseout', startImageEvent);
 
-    personResultat1.removeEventListener('mouseover', stopRecurringEvent);
-    personResultat1.addEventListener('mouseover', stopRecurringEvent);
-    personResultat1.addEventListener('mouseout', startRecurringEventOnClick);
+    personResultat2.removeEventListener('mouseover', stopImageEvent);
+    personResultat2.addEventListener('mouseover', stopImageEvent);
+    personResultat2.addEventListener('mouseout', startImageEvent);
 
-    personResultat2.removeEventListener('mouseover', stopRecurringEvent);
-    personResultat2.addEventListener('mouseover', stopRecurringEvent);
-    personResultat2.addEventListener('mouseout', startRecurringEventOnClick);
-
-    personResultat3.removeEventListener('mouseover', stopRecurringEvent);
-    personResultat3.addEventListener('mouseover', stopRecurringEvent);
-    personResultat3.addEventListener('mouseout', startRecurringEventOnClick);
+    personResultat3.removeEventListener('mouseover', stopImageEvent);
+    personResultat3.addEventListener('mouseover', stopImageEvent);
+    personResultat3.addEventListener('mouseout', startImageEvent);
 }
 
-function stopRecurringEvent() {
+function stopImageEvent() {
     clearInterval(intervalId);
 }
 
-function recurringEvent() {
+function startoverImageEvent() {
     toggleButton.click();
 }
 
 let overviewElement;
 
+//hämta information sökresultat
 function searchFilm() {
     const searchInput = document.getElementById("searchInput").value;
     const searchType = document.getElementById("searchType").value;
 
-    stopRecurringEvent();
+    stopImageEvent();
     
     movieList.innerHTML = '';
     peopleList.innerHTML = '';
 
     let searchUrl;
     if (searchType === 'movies') {
-        searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchInput}`;
+        searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${searchInput}`;
         movieList.style.display = 'block';
         peopleList.style.display = 'none';
     } else if (searchType === 'people') {
-        searchUrl = `https://api.themoviedb.org/3/search/person?api_key=${API_KEY}&query=${searchInput}`;
+        searchUrl = `https://api.themoviedb.org/3/search/person?api_key=${apiKey}&query=${searchInput}`;
         movieList.style.display = 'none';
         peopleList.style.display = 'block';
     }
@@ -135,6 +147,7 @@ function searchFilm() {
         .catch((err) => console.error("error:" + err));
 }
 
+//lista sökresultat personer med länk till respektive sida
 function displayPeople(peoples) {
     for (let peopleCount = 0; peopleCount < peoples.length; peopleCount++) {
         const person = peoples[peopleCount];
@@ -148,6 +161,7 @@ function displayPeople(peoples) {
     }
 }
 
+//personposter med länkning
 function displayPeopleInfo(person, resultIdentifier) {
     const personTitle = person.original_name;
 
@@ -178,29 +192,22 @@ function displayPeopleInfo(person, resultIdentifier) {
     personInfoElement.appendChild(personImageLink);
 }
 
-
+//information om person när hovrar över poster
 function showPeopleOverview(person) {
     const personName = person.original_name;
-    const department = person.known_for_department;
     divx.style.display = "block";
 
-    overviewElement.innerHTML = `
-    <h1 class="title">${personName}</h1>
-    Click on poster to read more about ${personName}!
-    `;
+    const titleElement = document.createElement("h1");
+    titleElement.classList.add("title");
+    titleElement.textContent = personName;
+
+    const textElement = document.createElement("p");
+    textElement.textContent = "Click on poster to read more about " + personName + "!";
+
+    overviewElement.innerHTML = '';
+    overviewElement.appendChild(titleElement);
+    overviewElement.appendChild(textElement);
 }
-
-const toggleButton = document.getElementById('toggleButton');
-const filmResultat1 = document.querySelector('.filmResultat1');
-const filmResultat2 = document.querySelector('.filmResultat2');
-const filmResultat3 = document.querySelector('.filmResultat3');
-
-const personResultat1 = document.querySelector('.personResultat1');
-const personResultat2 = document.querySelector('.personResultat2');
-const personResultat3 = document.querySelector('.personResultat3');
-
-const divx = document.getElementById('divx');
-
 
 toggleButton.addEventListener('click', () => {
     if (filmResultat1.style.display !== 'none') {
@@ -232,7 +239,7 @@ toggleButton.addEventListener('click', () => {
     }
 });
 
-
+//filmposter med länkning
 function displayMovieInfo(movie, resultIdentifier) {
     const movieTitle = movie.original_title;
 
@@ -265,6 +272,7 @@ function displayMovieInfo(movie, resultIdentifier) {
 
 overviewElement = document.getElementById("divx");
 
+//information om film när hovrar poster
 function showMovieOverview(movie) {
     const movieTitle = movie.original_title;
     const movieOverview = movie.overview;
@@ -288,25 +296,24 @@ function showMovieOverview(movie) {
     divx.style.display = "block";
 }
 
-
-document.getElementById('searchForm').addEventListener('submit', function (event) {
+searchForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    var searchTerm = document.getElementById('searchInput').value;
+    const searchTerm = document.getElementById('searchInput').value;
 
     fetchMovies(searchTerm);
     fetchPeople(searchTerm);
 });
 
 function fetchMovies(searchTerm) {
-    const apiKey = API_KEY;
+
     const apiUrl = 'https://api.themoviedb.org/3/search/movie';
 
     let page = 1;
     let totalPages = 1;
 
     function fetchPage(page) {
-        var url = `${apiUrl}?query=${searchTerm}&api_key=${apiKey}&page=${page}`;
+        const url = `${apiUrl}?query=${searchTerm}&api_key=${apiKey}&page=${page}`;
         
         fetch(url)
             .then(response => response.json())
@@ -326,7 +333,6 @@ function fetchMovies(searchTerm) {
 }
 
 function fetchPeople(searchTerm) {
-    const apiKey = API_KEY;
     const personApiUrl = 'https://api.themoviedb.org/3/search/person';
 
     let personPage = 1;
@@ -352,9 +358,7 @@ function fetchPeople(searchTerm) {
     fetchPersonPage(personPage);
 }
 
-
-const movieList = document.getElementById('movieList');
-
+//lista sökresultat personer med länk till respektive sida
 function displayMovies(movies) {
     for (let movieCount = 0; movieCount < movies.length; movieCount++) {
         const movie = movies[movieCount];
@@ -368,6 +372,7 @@ function displayMovies(movies) {
     }
 }
 
+//animation med lutande F och understreck
 anime({
     targets: '.letter-f',
     rotate: [

@@ -1,3 +1,4 @@
+//hämta begränsat med sidor av API för att göra en topp 100
 let page = 1;
 let currentPageRated = 1;
 let currentPagePopular = 1;
@@ -12,6 +13,7 @@ const popularTopList = document.getElementById('popularTopList');
 const ratedKnapp = document.getElementById('ratedKnapp');
 const popularKnapp = document.getElementById('popularKnapp');
 
+//byta mellan listorna via knapparna
 function doljPopular() {
     popularTopList.style.display = 'none';
     popularKnapp.style.background = 'darkgrey'
@@ -33,6 +35,7 @@ function doljRated() {
 ratedKnapp.addEventListener("click", doljPopular);
 popularKnapp.addEventListener("click", doljRated);
 
+//hämta lista över filmer med bäst betyg 
 function fetchRatedMovies() {
   if (currentPageRated > numberOfPagesToFetch) {
     return;
@@ -46,11 +49,15 @@ function fetchRatedMovies() {
       console.log(data);
 
       data.results.forEach((movie, index) => {
-        const listItem = createMovieLink(movie, index);
-        ratedTopList.appendChild(listItem);
+        const movieContainer = document.createElement('div');
 
+        const listItem = createMovieLink(movie, index);
         const posterImg = createMoviePost(movie);
-        ratedTopList.appendChild(posterImg);
+
+        movieContainer.appendChild(listItem);
+        movieContainer.appendChild(posterImg);
+
+        ratedTopList.appendChild(movieContainer);
       });
 
       currentPageRated++;
@@ -64,6 +71,7 @@ function fetchRatedMovies() {
     .catch(err => console.error(err));
 }
 
+//hämta lista över mest populära filmer
 function fetchPopularMovies() {
   if (currentPagePopular > numberOfPagesToFetch) {
     return;
@@ -94,25 +102,26 @@ function fetchPopularMovies() {
 }
 
 fetchPopularMovies();
-
 fetchRatedMovies();
 
+//skapa två listor med titel och år. Markera topp 10.
 function createMovieLink(movie, index) {
-    const listItem = document.createElement('li');
-    const movieRef = document.createElement("a");
-    movieRef.href = `infosida.html?movieId=${movie.id}`;
-    movieRef.textContent = movie.title + " (" + movie.release_date + ")";
-    movieRef.setAttribute("target", "_blank");
+  const listItem = document.createElement('li');
+  const movieRef = document.createElement("a");
+  movieRef.href = `infosida.html?movieId=${movie.id}`;
+  movieRef.textContent = movie.title + " (" + movie.release_date + ")";
+  movieRef.setAttribute("target", "_blank");
 
-    if (index < 10) {
-      movieRef.style.fontWeight = 'bold';
-      movieRef.style.color = 'green';
-    }
-
-    listItem.appendChild(movieRef);
-    return listItem;
+  if (index < 10) {
+    movieRef.style.fontWeight = 'bold';
+    movieRef.style.color = 'green';
   }
 
+  listItem.appendChild(movieRef);
+  return listItem;
+}
+
+//Lägga till posters till varje film i listan
 function createMoviePost(movie) {
 
     const posterImgUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'het-archief-van-verschillende-media-de-spoel-en-de-omslag-van-de-film-23883411.jpg';

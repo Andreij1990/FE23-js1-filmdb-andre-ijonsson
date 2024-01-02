@@ -1,5 +1,6 @@
 const API_KEY = "9451350a84bd8f4b2bd8929f67364a18";
 
+//för att kunna plocka ut delar av strängen
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movieId');
 const personId = urlParams.get('personId');
@@ -30,21 +31,24 @@ async function fetchActorDetails(personId) {
   }
 }
 
+//Poster och backgrund för den specifika filmen om finns 
 function displayMovieDetails(movie) {
   const backdropPath = movie.backdrop_path;
   const backdropUrl = backdropPath ? `https://image.tmdb.org/t/p/original${backdropPath}` : '';
 
+  //standardbild om poster saknas
   const posterImageUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'bilder/het-archief-van-verschillende-media-de-spoel-en-de-omslag-van-de-film-23883411.jpg';
-
-  const titleLink = document.createElement("a");
-  titleLink.href = `https://www.themoviedb.org/movie/${movie.id}`;
-  titleLink.textContent = "TMDb";
-  titleLink.setAttribute("target", "_blank");
 
   const posterImg = document.createElement("img");
   posterImg.src = posterImageUrl;
   posterImg.alt = `${movie.original_title} Poster`;
   posterImg.classList.add('BigPosterImg');
+
+  //länk till filmens TMDb-sida
+  const titleLink = document.createElement("a");
+  titleLink.href = `https://www.themoviedb.org/movie/${movie.id}`;
+  titleLink.textContent = "TMDb";
+  titleLink.setAttribute("target", "_blank");
 
   const movieDetailsContainer = document.getElementById('movieDetailsContainer');
 
@@ -80,7 +84,7 @@ function displayMovieDetails(movie) {
   document.body.style.backgroundSize = 'cover';
 }
 
-
+//skapa en array över genre och sedan sätta ihop som en sträng
 function getGenresString(genres) {
     return genres.map(genre => genre.name).join(', ');
 }
@@ -170,6 +174,7 @@ async function fetchAndDisplayTopCredits(personId) {
     }
   }
   
+  //lista mest känd för
   function createListElement(credits, title) {
     const ulElement = document.createElement("ul");
   
@@ -196,6 +201,7 @@ async function fetchAndDisplayTopCredits(personId) {
     return ulElement;
   }
   
+  //navigera till den specifika URL-adressen
   function navigateTo(url) {
     window.location.href = url;
   }
