@@ -68,7 +68,10 @@ function fetchRatedMovies() {
         fetchPopularMovies();
       }
     })
-    .catch(err => console.error(err));
+    .catch((err) => {
+      console.error("Error: " + err);
+      alert("Failed to load Top list" + err.message);
+    });
 }
 
 //hämta lista över mest populära filmer
@@ -98,7 +101,10 @@ function fetchPopularMovies() {
           fetchPopularMovies();
       }
   })
-  .catch(err => console.error(err));
+  .catch((err) => {
+  console.error("Error: " + err);
+  alert("Failed to load Top list " + err.message);
+});
 }
 
 fetchPopularMovies();

@@ -212,4 +212,11 @@ margin-left: 17%;
 a {
     color: darkred;
 }
+.errMess {
+    color: gold;
+    font-size: 30px;
 
+}
+.listError {
+    color: red;
+}

@@ -121,7 +121,14 @@ function searchFilm() {
     }
 
     fetch(searchUrl)
-        .then((res) => res.json())
+        .then((res) => {
+            if (res.status === 200) {
+               return res.json();
+            }
+            else if (res.status >= 400) {
+                throw 'Error ' + res.status;
+            }
+        })
         .then((json) => {
             console.log(json);
             if (json.results && json.results.length > 0) {
@@ -144,8 +151,13 @@ function searchFilm() {
                 alert(`No ${searchType === 'movies' ? 'movies' : 'people'} found with the given title.`);
             }
         })
-        .catch((err) => console.error("error:" + err));
-}
+
+        //Uppdaterat så visas meddelande vid fel 
+        .catch((err) => {
+            console.error("Error: " + err);
+              alert("Failed to load posters. " + err.message);
+          });
+        }
 
 //lista sökresultat personer med länk till respektive sida
 function displayPeople(peoples) {
@@ -326,8 +338,13 @@ function fetchMovies(searchTerm) {
                     fetchPage(page + 1);
                 }
             })
-            .catch(error => console.error('Error fetching movies:', error));
-    }
+
+            //Uppdaterat så visas meddelande vid fel 
+            .catch(error => {
+                console.error('Error:' + error)
+                alert('Problem loading list of movies. ' + error.message);
+            });
+        }
 
     fetchPage(page);
 }
@@ -352,7 +369,12 @@ function fetchPeople(searchTerm) {
                     fetchPersonPage(personPage + 1);
                 }
             })
-            .catch(error => console.error('Error fetching people:', error));
+
+            //Uppdaterat så visas meddelande vid fel 
+            .catch(error => {
+                console.error('Error:' + error)
+                alert('Problem loading list of people. ' + error.message);
+            });
     }
 
     fetchPersonPage(personPage);

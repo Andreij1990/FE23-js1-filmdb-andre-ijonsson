@@ -1,3 +1,12 @@
+//om inte sidan laddas korrekt
+const errMess = document.createElement('p');
+errMess.innerText = "Something went wrong...";
+errMess.classList.add('errMess');
+
+const listError = document.createElement('p');
+listError.innerText = "Known for-list failed to load";
+listError.classList.add ('listError');
+
 const API_KEY = "9451350a84bd8f4b2bd8929f67364a18";
 
 //för att kunna plocka ut delar av strängen
@@ -17,17 +26,29 @@ async function fetchMovieDetails(movieId) {
       const data = await response.json();
       displayMovieDetails(data);
   } catch (error) {
-      console.error('Error:', error);
+      console.error('Error: ' + error);
+      document.body.style.backgroundImage = "url('bilder/Mojave_Desert-2067.jpg')";
+      document.body.style.backgroundRepeat = 'no-repeat';
+      document.body.style.backgroundSize = 'cover';
+      document.body.append(errMess);
   }
 }
+
+let fetchSuccessful;
 
 async function fetchActorDetails(personId) {
   try {
       const response = await fetch(`https://api.themoviedb.org/3/person/${personId}?api_key=${API_KEY}`);
       const data = await response.json();
       displayActorDetails(data);
+      fetchSuccessful = true;
   } catch (error) {
-      console.error('Error:', error);
+      console.error('Error: ' + error);
+      document.body.style.backgroundImage = "url('bilder/Mojave_Desert-2067.jpg')";
+      document.body.style.backgroundRepeat = 'no-repeat';
+      document.body.style.backgroundSize = 'cover';
+      document.body.append(errMess);
+      fetchSuccessful = false;
   }
 }
 
@@ -138,8 +159,8 @@ async function fetchAndDisplayTopCredits(personId) {
   
     try {
       const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.ok || fetchSuccessful === false) {
+        throw new Error(`Error: ${response.status}`);
       }
   
       const data = await response.json();
@@ -170,7 +191,7 @@ async function fetchAndDisplayTopCredits(personId) {
       }
     } catch (error) {
       console.error("Error fetching data:", error.message);
-      throw error;
+      document.body.append(listError);
     }
   }
   
@@ -211,6 +232,7 @@ async function fetchAndDisplayTopCredits(personId) {
   if (personsId) {
     fetchAndDisplayTopCredits(personsId)
       .catch(error => {
-        console.error("Fel vid hämtning och visning av listorna:", error);
+        console.error('Error ' + error.message);
+        alert('Known for failed to load. ' + error.message);
       });
   }
